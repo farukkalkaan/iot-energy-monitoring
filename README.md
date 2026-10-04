@@ -43,3 +43,44 @@ MQTT topic:
 
 ```text
 factory/motor1/telemetry
+```
+## Example MQTT Message
+{
+  "voltage": 234.84,
+  "current": 18.4,
+  "power": 4216.0,
+  "temperature": 30.0
+}
+## Database Schema
+CREATE TABLE telemetry (
+    id SERIAL PRIMARY KEY,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    voltage_v DOUBLE PRECISION NOT NULL,
+    current_a DOUBLE PRECISION NOT NULL,
+    power_w DOUBLE PRECISION NOT NULL,
+    temperature_c DOUBLE PRECISION NOT NULL
+);
+## Installation
+Install the required Python packages:
+
+python -m pip install -r requirements.txt
+
+Make sure PostgreSQL and Mosquitto MQTT Broker are installed and running.
+## Environment Variables
+Create a .env file in the project directory:
+
+DB_PASSWORD=your_postgresql_password
+## Running the Project
+Start the device simulator:
+
+python device_simulator.py
+
+Start the MQTT consumer in another terminal:
+
+python mqtt_consumer.py
+## Example Query
+SELECT * FROM telemetry
+ORDER BY id DESC;
+## Security
+Database credentials are not stored directly in the source code.
+The PostgreSQL password is loaded from a local .env file using python-dotenv.
